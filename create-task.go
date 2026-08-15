@@ -36,7 +36,7 @@ func CreateTask(item utils.Task) error {
 	if err != nil {
 		return err
 	}
-	fmt.Print("Task Created succesfully")
+	fmt.Print("Task Added succesfully")
 	return os.WriteFile("task.json", data, 0644)
 
 }
