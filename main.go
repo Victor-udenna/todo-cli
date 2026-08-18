@@ -42,7 +42,7 @@ func main() {
 			ListTask()
 		case "3":
 			fmt.Println("Update task...")
-
+			UpdateTask()
 		case "4":
 			fmt.Println("Bye!")
 			return
