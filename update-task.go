@@ -35,9 +35,9 @@ func UpdateTask() {
 		if convertIdToInt == item.ID {
 			item.Completed = true
 			fmt.Println(item)
+			// add the task to the json file
+			taskList = append(taskList, item)
+			fmt.Println(taskList)
 		}
 	}
-
-	fmt.Println(choice, "this is the choice")
-	fmt.Println(taskList)
 }
