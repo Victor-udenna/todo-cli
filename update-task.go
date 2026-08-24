@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func UpdateTask() {
+func UpdateTask() error {
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Print("Enter task id to change status | ")
 	input, err := reader.ReadString('\n')
@@ -23,21 +23,29 @@ func UpdateTask() {
 	// var filtered []utils.Task
 	err = json.Unmarshal(data, &taskList)
 	if err != nil {
-		return
+		return err
 	}
 
 	convertIdToInt, err := strconv.Atoi(choice)
 	if err != nil {
-		return
+		return err
 	}
 
 	for _, item := range taskList {
-		if convertIdToInt == item.ID {
+		if convertIdToInt == item.ID && item.Completed == false {
 			item.Completed = true
 			fmt.Println(item)
 			// add the task to the json file
 			taskList = append(taskList, item)
-			fmt.Println(taskList)
+		} else {
+			fmt.Printf("task is already completed")
+			break
 		}
 	}
+
+	fmt.Println(taskList)
+
+	data, err = json.MarshalIndent(taskList, "", " ")
+	fmt.Print("Task updated succesfully")
+	return os.WriteFile("task.json", data, 06444)
 }
