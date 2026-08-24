@@ -31,21 +31,35 @@ func UpdateTask() error {
 		return err
 	}
 
-	for _, item := range taskList {
-		if convertIdToInt == item.ID && item.Completed == false {
-			item.Completed = true
-			fmt.Println(item)
-			// add the task to the json file
-			taskList = append(taskList, item)
-		} else {
-			fmt.Printf("task is already completed")
+	found := false
+
+	for i := range taskList {
+		if convertIdToInt == taskList[i].ID {
+			found = true
+
+			if taskList[i].Completed {
+				fmt.Println("Task is already completed")
+				return nil
+			}
+
+			taskList[i].Completed = true
+
+			fmt.Println("Updated task:", taskList[i])
 			break
 		}
 	}
 
-	fmt.Println(taskList)
+	if !found {
+		fmt.Println("Task not found")
+		return nil
+	}
 
 	data, err = json.MarshalIndent(taskList, "", " ")
-	fmt.Print("Task updated succesfully")
-	return os.WriteFile("task.json", data, 06444)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Task updated successfully")
+
+	return os.WriteFile("task.json", data, 0644)
 }
